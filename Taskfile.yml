@@ -1,0 +1,62 @@
+version: "3"
+
+tasks:
+  default:
+    desc: List available tasks
+    silent: true
+    cmds:
+      - go-task --list
+
+  build:
+    desc: Build the blog binary
+    cmds:
+      - go build -o blog .
+    sources:
+      - "**/*.go"
+      - go.mod
+      - go.sum
+    generates:
+      - blog
+
+  test:
+    desc: Run all tests
+    cmds:
+      - go test ./...
+
+  test-verbose:
+    desc: Run tests with verbose output
+    cmds:
+      - go test -v ./...
+
+  test-cover:
+    desc: Run tests and open HTML coverage report
+    cmds:
+      - go test -coverprofile=coverage.out ./...
+      - go tool cover -html=coverage.out -o coverage.html
+      - echo "Coverage report written to coverage.html"
+
+  lint:
+    desc: Run go vet
+    cmds:
+      - go vet ./...
+
+  check:
+    desc: Lint then test
+    cmds:
+      - task: lint
+      - task: test
+
+  tidy:
+    desc: Tidy go module dependencies
+    cmds:
+      - go mod tidy
+
+  install:
+    desc: Install the blog binary to ~/bin
+    cmds:
+      - go build -o ~/bin/blog .
+
+  clean:
+    desc: Remove built binary and coverage artefacts
+    cmds:
+      - rm -f blog coverage.out coverage.html
