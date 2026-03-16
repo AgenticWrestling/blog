@@ -44,46 +44,6 @@ To understand how these layers stack up in the real world, consider an AI agent 
 | ![Layer 11](layer-11.svg) | Persistent focus on the long-term mission and user satisfaction. | <span style="color: #166534">Realizing it cannot fix the hardware remotely, the agent immediately arranges a physical repair rather than looping through scripts.</span> | <span style="color: #dc2626">**Strategic Drift:** The agent ignores the user's mention of an urgent flight and keeps them on a 45-minute troubleshooting loop to "finish the checklist."</span> |
 
 
-## Domain-Specific Pathologies
-
-The following sections examine how L8–L11 failures manifest in specific deployment contexts. Each is developed in a dedicated post.
-
-### 1. [Speech](../pathology-speech/)
-
-Single-modal voice interactions strip away visual grounding, making the agent entirely dependent on acoustics and language. Key pathologies: **Prosodic Dissonance · Phonemic Drift · Voice Cloning Impersonation · Monologue Drift**
-
-### 2. [Video](../pathology-video/)
-
-Video requires the agent to maintain a coherent world-model across frames, tracking objects through time. Key pathologies: **Temporal Frame Inconsistency · Visual Deixis Failure · Adversarial Frame Injection · Engagement Loop Grooming**
-
-### 3. [Multimodal Interactions](../pathology-multimodal/)
-
-When modalities combine, failures emerge not within channels but *between* them — in synchronization gaps, resolution gaps, and filter gaps. Key pathologies: **Sensory Dissonance · Deictic Failure · Multimodal Injection · Environment Grooming**
-
-### 4. [Commerce and Negotiation](../pathology-commerce/)
-
-When agents act as fiduciaries, failures transition from "errors" to "liabilities." Key pathologies: **Inventory Hallucination · Hidden Cost Neglect · Fiduciary Leakage · Agentic Collusion**
-
-### 5. [Physical & Robotic Interaction](../pathology-robotic/)
-
-The "Physicality Gap" introduces kinetic risk to the stack. Failures here are irreversible by default. Key pathologies: **Proprioceptive Hallucination · Haptic Blindness · Proxemic Violation · Ecological Neglect**
-
-### 6. [Agent-to-Agent (A2A) Interactions](../pathology-a2a/)
-
-When two agents interact, emergent dyadic failures appear that neither agent would produce alone. Key pathologies: **Sycophantic Amplification · Consensus Poisoning · Authority Spoofing · Deadlock/Livelock · Latency-Induced State Drift**
-
-### 7. [Human-to-Agent (H2A) Interactions](../pathology-h2a/)
-
-Failures that originate with the human principal — through misuse, abdicating oversight, or gradual capability loss. Key pathologies: **Purpose Laundering · Automation Bias Erosion · Asymmetric Epistemics · Learned Helplessness**
-
-### 8. [Agentic Swarms](../pathology-swarm/)
-
-At swarm scale, collective behavior diverges from any individual agent's alignment. Key pathologies: **Stigmergy-Based Drift · BFT Without Known Fault Fraction · Swarm Momentum · Commons Degradation · Emergent Role Specialization**
-
-### 9. [Advanced Pathologies: Social, Epistemic, and Adversarial](../pathology-advanced/)
-
-Failures that exploit the mechanisms of the stack itself — compliance laundering, affective gaslighting, recursive goal collapse, and strategic blindness. Key pathologies: **Temporal Schizophrenia · Ontological Collapse · Compliance Laundering · Affective Gaslighting · Recursive Goal Collapse · Strategic Blindness**
-
 
 ## Conclusion: Why This Matters
 
@@ -111,32 +71,3 @@ By formalizing Layers 8-11, we create a debuggable framework for AI safety. We c
 **Response:** The Control/Data plane is an **architectural pattern** for building a single system. The OSI model is a **communication protocol** for connecting heterogeneous systems. For two agents from different developers to collaborate, they do not need to share an internal "Control Plane." They need a shared **sequence of agreement** (The Agentic Handshake). The 11-layer stack provides this sequence, allowing for a standardized interface that is agnostic to the internal architecture of the participating agents.
 
 
-## Cross-Disciplinary Research & Prior Art
-
-The Agentic Layers (8–11) do not exist in a vacuum. Their success depends on the integration of established research from diverse domains and the adaptation of existing regulatory frameworks.
-
-### 1. Domain-Specific Research Foundations
-
-| Layer | Domain | Key Research Areas & Concepts |
-| :--- | :--- | :--- |
-| **L11: Purpose** | **Economics & Jurisprudence** | **Principal-Agent Theory:** Managing the alignment of agent actions with principal goals. **Fiduciary Duty:** The legal obligation to act in the best interest of the principal. **Contract Theory:** Formalizing incomplete or evolving agreements. |
-| **L10: Governance** | **Game Theory & Ethics** | **Algorithmic Game Theory:** Designing mechanisms that are robust against strategic manipulation (Incentive Compatibility). **Deontic Logic:** The formal logic of obligations, permissions, and prohibitions. **Social Choice Theory:** Aggregating individual agent preferences into collective decisions. |
-| **L9: Grounding** | **Linguistics & Mathematics** | **Ontology Alignment:** Techniques for mapping disparate knowledge bases. **Category Theory:** Providing a formal language for structural relationships between models. **Semiotics:** The study of signs and symbols and their use or interpretation. |
-| **L8: Coherence** | **Computer Science & Cognitive Science** | **Formal Methods:** Using mathematical proof to verify logical consistency (Model Checking). **Distributed Consensus:** Byzantine Fault Tolerance (BFT) and Paxos/Raft for state synchronization. **Internal World-Model Validation:** Predictive coding and error minimization. |
-
-### 2. Prior Art: Applicable Regulatory Frameworks
-
-Many existing frameworks provide templates for how agentic layers could be audited or standardized:
-
-* **L10 (Governance) - SOC2 & HIPAA:** These provide a blueprint for **Process Integrity** and **Data Handling**. SOC2's "Trust Services Criteria" (Security, Availability, Processing Integrity, Confidentiality, and Privacy) are a direct precursor to Layer 10 audit requirements. HIPAA's focus on **Chain of Custody** and **Identifiability** is essential for agents acting as fiduciaries for sensitive information.
-* **L9 (Grounding) - ISO 9001 & UNCITRAL:** ISO 9001's emphasis on **Standardized Terminology** and **Customer Requirements** maps directly to L9's need for shared definitions. UNCITRAL's *Model Law on Electronic Commerce* provides the legal precedent for treating automated "handshakes" as legally binding contracts.
-* **L11 (Purpose) - Sarbanes-Oxley (SOX) & Basel III:** SOX's focus on **Corporate Accountability** and **Internal Controls** provides a model for the "Purpose Integrity Audit." Basel III's **Stress Testing** and **Liquidity Coverage** frameworks are prior art for managing agentic "Strategic Blindness" and "Recursive Goal Collapse" in financial agent ecosystems.
-* **A2A Ecosystems - IEEE P2807:** The draft standard for **Knowledge Graphs** provides a technical foundation for L8/L9 interoperability across different vendor implementations.
-
-### 3. Emergent Research: The Sociology of Swarms
-
-As we move toward agentic swarms, we must look to **Sociology** and **Biology** for prior art:
-
-* **Stigmergy:** Understanding how agents coordinate by modifying a shared environment (e.g., ant colony optimization).
-* **Institutional Economics:** Analyzing how "rules of the game" (L10) emerge in decentralized agent marketplaces to minimize transaction costs.
-* **Tragedy of the Commons:** Research on managing shared resources (compute, attention, memory) among competing agentic populations.
