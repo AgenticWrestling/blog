@@ -56,6 +56,9 @@ tasks:
     cmds:
       - task: build
       - ./blog
+    env:
+      BLOG_INPUT_DIR: ./posts
+      BLOG_OUTPUT_DIR: ./public
 
   install:
     desc: Install the blog binary to ~/bin
