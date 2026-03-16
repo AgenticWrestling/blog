@@ -3,6 +3,7 @@ package post
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -37,35 +38,56 @@ func TestIsSnakeCase(t *testing.T) {
 	}
 }
 
-// -- transformMermaid --
+// -- processMermaid --
 
-func TestTransformMermaidReplaces(t *testing.T) {
-	input := "before\n```mermaid\ngraph TD; A-->B;\n```\nafter"
-	got := transformMermaid(input)
-	if !strings.Contains(got, `<div class="mermaid">`) {
-		t.Errorf("expected mermaid div in output, got:\n%s", got)
-	}
-	if !strings.Contains(got, "graph TD; A-->B;") {
-		t.Errorf("expected graph content preserved, got:\n%s", got)
-	}
-	if strings.Contains(got, "```mermaid") {
-		t.Error("expected backtick block to be replaced, but it remains")
-	}
-}
-
-func TestTransformMermaidNoOp(t *testing.T) {
-	input := "<p>no mermaid here</p>"
-	if got := transformMermaid(input); got != input {
+func TestProcessMermaidNoOp(t *testing.T) {
+	dir := t.TempDir()
+	input := []byte("no mermaid here")
+	if got := processMermaid(dir, input); string(got) != string(input) {
 		t.Errorf("expected no-op on non-mermaid input, got:\n%s", got)
 	}
 }
 
-func TestTransformMermaidMultiple(t *testing.T) {
-	input := "```mermaid\nA-->B\n```\ntext\n```mermaid\nC-->D\n```"
-	got := transformMermaid(input)
-	count := strings.Count(got, `<div class="mermaid">`)
-	if count != 2 {
-		t.Errorf("expected 2 mermaid divs, got %d in:\n%s", count, got)
+func TestProcessMermaidFallbackWhenMmdcMissing(t *testing.T) {
+	if _, err := exec.LookPath("mmdc"); err == nil {
+		t.Skip("mmdc is present; skipping fallback test")
+	}
+	dir := t.TempDir()
+	input := []byte("before\n```mermaid\ngraph TD; A-->B;\n```\nafter")
+	got := processMermaid(dir, input)
+	// Without mmdc the original block must be preserved unchanged.
+	if string(got) != string(input) {
+		t.Errorf("expected original preserved when mmdc missing, got:\n%s", got)
+	}
+}
+
+func TestProcessMermaidWithMmdc(t *testing.T) {
+	if _, err := exec.LookPath("mmdc"); err != nil {
+		t.Skip("mmdc not in PATH")
+	}
+	dir := t.TempDir()
+	input := []byte("before\n```mermaid\ngraph TD; A-->B;\n```\nafter")
+	got := processMermaid(dir, input)
+	if strings.Contains(string(got), "```mermaid") {
+		t.Error("expected mermaid block replaced, but backticks remain")
+	}
+	if !strings.Contains(string(got), "diagram-1.svg") {
+		t.Errorf("expected img reference to diagram-1.svg, got:\n%s", got)
+	}
+	if _, err := os.Stat(filepath.Join(dir, "diagram-1.svg")); err != nil {
+		t.Errorf("expected diagram-1.svg to exist in post dir: %v", err)
+	}
+}
+
+func TestProcessMermaidMultipleWithMmdc(t *testing.T) {
+	if _, err := exec.LookPath("mmdc"); err != nil {
+		t.Skip("mmdc not in PATH")
+	}
+	dir := t.TempDir()
+	input := []byte("```mermaid\nA-->B\n```\ntext\n```mermaid\nC-->D\n```")
+	got := processMermaid(dir, input)
+	if strings.Count(string(got), "diagram-") != 2 {
+		t.Errorf("expected 2 diagram references, got:\n%s", got)
 	}
 }
 

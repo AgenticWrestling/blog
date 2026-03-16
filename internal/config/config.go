@@ -59,11 +59,17 @@ func LoadFrom(confPath string) (*Config, error) {
 }
 
 func InputDir() string {
+	if v := os.Getenv("BLOG_INPUT_DIR"); v != "" {
+		return v
+	}
 	home, _ := os.UserHomeDir()
 	return filepath.Join(home, "Documents", "blog")
 }
 
 func OutputDir() string {
+	if v := os.Getenv("BLOG_OUTPUT_DIR"); v != "" {
+		return v
+	}
 	home, _ := os.UserHomeDir()
 	return filepath.Join(home, "Documents", "blog-output")
 }

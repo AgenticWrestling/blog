@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"blog/internal/generator"
 
 	"github.com/fsnotify/fsnotify"
 )
-
 
 func Serve(inputDir, outputDir string) error {
 	// Initial build
@@ -40,6 +40,18 @@ func Serve(inputDir, outputDir string) error {
 				if !ok {
 					return
 				}
+				// Immediately watch newly created directories so files added
+				// inside them within the debounce window are not missed.
+				if event.Has(fsnotify.Create) {
+					if fi, err := os.Stat(event.Name); err == nil && fi.IsDir() {
+						watchRecursive(watcher, event.Name)
+					}
+				}
+				// Only rebuild for .md changes; ignore generated artifacts
+				// (SVGs, etc.) written back to the source dir to avoid a loop.
+				if !strings.HasSuffix(strings.ToLower(event.Name), ".md") {
+					continue
+				}
 				fmt.Printf("change detected: %s\n", event.Name)
 				if timer != nil {
 					timer.Stop()
@@ -51,8 +63,6 @@ func Serve(inputDir, outputDir string) error {
 					} else {
 						fmt.Println("rebuild complete")
 					}
-					// Re-watch any new directories
-					watchRecursive(watcher, inputDir)
 				})
 			case err, ok := <-watcher.Errors:
 				if !ok {

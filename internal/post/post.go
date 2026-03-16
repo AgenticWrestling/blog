@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -20,16 +21,31 @@ import (
 type Post struct {
 	Slug      string
 	Title     string
+	Summary   string
 	CreatedAt time.Time
 	Tags      []string
 	HTMLBody  string
 	Dir       string // absolute path to source directory
 }
 
-var snakeCaseRe = regexp.MustCompile(`^[a-z0-9]+(_[a-z0-9]+)*$`)
+var slugRe = regexp.MustCompile(`^[a-z0-9]+([_-][a-z0-9]+)*$`)
 
 func IsSnakeCase(s string) bool {
-	return snakeCaseRe.MatchString(s)
+	return slugRe.MatchString(s)
+}
+
+// findMD returns the path to the first .md file in dir, or an error if none exists.
+func findMD(dir string) (string, error) {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return "", err
+	}
+	for _, e := range entries {
+		if !e.IsDir() && strings.HasSuffix(strings.ToLower(e.Name()), ".md") {
+			return filepath.Join(dir, e.Name()), nil
+		}
+	}
+	return "", fmt.Errorf("no .md file found in %s", dir)
 }
 
 func Load(dir string) (*Post, error) {
@@ -38,11 +54,16 @@ func Load(dir string) (*Post, error) {
 		fmt.Fprintf(os.Stderr, "warning: post directory %q is not snake_case\n", slug)
 	}
 
-	mdPath := filepath.Join(dir, "index.md")
+	mdPath, err := findMD(dir)
+	if err != nil {
+		return nil, err
+	}
 	raw, err := os.ReadFile(mdPath)
 	if err != nil {
 		return nil, fmt.Errorf("reading %s: %w", mdPath, err)
 	}
+
+	raw = processMermaid(dir, raw)
 
 	md := goldmark.New(
 		goldmark.WithExtensions(
@@ -77,6 +98,10 @@ func Load(dir string) (*Post, error) {
 		// Use slug as title if not set
 		p.Title = strings.ReplaceAll(strings.ReplaceAll(slug, "_", " "), "-", " ")
 		p.Title = toTitleCase(p.Title)
+	}
+
+	if s, ok := metadata["summary"]; ok {
+		p.Summary = fmt.Sprintf("%v", s)
 	}
 
 	if tags, ok := metadata["tags"]; ok {
@@ -115,8 +140,7 @@ func Load(dir string) (*Post, error) {
 	// Validate file references
 	validateRefs(dir)
 
-	// Transform mermaid code blocks
-	p.HTMLBody = transformMermaid(buf.String())
+	p.HTMLBody = buf.String()
 
 	return p, nil
 }
@@ -167,16 +191,64 @@ func validateRefs(dir string) {
 	}
 }
 
-var mermaidRe = regexp.MustCompile("(?s)```mermaid\\s*\\n(.*?)\\n```")
+var mermaidFenceRe = regexp.MustCompile("(?s)```mermaid[ \t]*\n(.*?)\n```")
 
-func transformMermaid(html string) string {
-	return mermaidRe.ReplaceAllStringFunc(html, func(match string) string {
-		sub := mermaidRe.FindStringSubmatch(match)
+// processMermaid finds fenced mermaid blocks in raw markdown, generates an SVG
+// for each using mmdc, and replaces the block with the inlined SVG so that the
+// page's font (Noto Sans) applies directly without needing an external request.
+func processMermaid(dir string, raw []byte) []byte {
+	n := 0
+	return mermaidFenceRe.ReplaceAllFunc(raw, func(match []byte) []byte {
+		sub := mermaidFenceRe.FindSubmatch(match)
 		if len(sub) < 2 {
 			return match
 		}
-		return `<div class="mermaid">` + sub[1] + `</div>`
+		n++
+		svgPath := filepath.Join(dir, fmt.Sprintf("diagram-%d.svg", n))
+		if err := renderMermaid(sub[1], svgPath); err != nil {
+			fmt.Fprintf(os.Stderr, "warning: mermaid render failed for %s diagram %d: %v\n", filepath.Base(dir), n, err)
+			return match // leave original fenced block on error
+		}
+		svgContent, err := os.ReadFile(svgPath)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "warning: reading mermaid svg %s: %v\n", svgPath, err)
+			return match
+		}
+		// Wrap in a div; two blank lines make goldmark treat it as an HTML block.
+		return append([]byte("\n\n<div class=\"mermaid-diagram\">\n"), append(svgContent, []byte("\n</div>\n\n")...)...)
 	})
+}
+
+const mermaidCSS = `text, tspan { font-family: 'Noto Sans', sans-serif; font-weight: 300; }`
+
+func renderMermaid(diagram []byte, outPath string) error {
+	tmp, err := os.CreateTemp("", "mermaid-*.mmd")
+	if err != nil {
+		return err
+	}
+	defer os.Remove(tmp.Name())
+	if _, err := tmp.Write(diagram); err != nil {
+		tmp.Close()
+		return err
+	}
+	tmp.Close()
+
+	cssTmp, err := os.CreateTemp("", "mermaid-*.css")
+	if err != nil {
+		return err
+	}
+	defer os.Remove(cssTmp.Name())
+	if _, err := cssTmp.WriteString(mermaidCSS); err != nil {
+		cssTmp.Close()
+		return err
+	}
+	cssTmp.Close()
+
+	out, err := exec.Command("mmdc", "-i", tmp.Name(), "-o", outPath, "--cssFile", cssTmp.Name(), "--quiet").CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("%w\n%s", err, bytes.TrimSpace(out))
+	}
+	return nil
 }
 
 func toTitleCase(s string) string {
@@ -202,11 +274,14 @@ func LoadAll(inputDir string) ([]*Post, error) {
 		if !e.IsDir() {
 			continue
 		}
-		mdPath := filepath.Join(inputDir, e.Name(), "index.md")
-		if _, err := os.Stat(mdPath); os.IsNotExist(err) {
+		if e.Name() == "drafts" {
 			continue
 		}
-		p, err := Load(filepath.Join(inputDir, e.Name()))
+		postDir := filepath.Join(inputDir, e.Name())
+		if _, err := findMD(postDir); err != nil {
+			continue
+		}
+		p, err := Load(postDir)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "warning: skipping post %s: %v\n", e.Name(), err)
 			continue

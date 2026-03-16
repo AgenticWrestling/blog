@@ -51,6 +51,12 @@ tasks:
     cmds:
       - go mod tidy
 
+  dev:
+    desc: Build and run the dev server (build, serve, and watch)
+    cmds:
+      - task: build
+      - ./blog
+
   install:
     desc: Install the blog binary to ~/bin
     cmds:
