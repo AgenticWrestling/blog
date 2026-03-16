@@ -1,0 +1,98 @@
+<svg width="500" height="900" viewBox="0 0 500 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+      <feOffset dx="2" dy="2" result="offsetblur" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .layer-box { stroke-width: 2; filter: url(#shadow); }
+    .agentic { fill: #f5f3ff; stroke: #8b5cf6; stroke-dasharray: 6,4; }
+    .classical { fill: #f8fafc; stroke: #64748b; }
+    .text-main { font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 16px; fill: #1e293b; }
+    .text-sub { font-family: 'Inter', system-ui, sans-serif; font-weight: 400; font-size: 13px; fill: #64748b; }
+    .layer-num { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 12px; fill: #94a3b8; }
+    .bracket { stroke: #cbd5e1; stroke-width: 2; fill: none; }
+    .bracket-label { font-family: 'Inter', system-ui, sans-serif; font-weight: 600; font-size: 14px; fill: #475569; text-anchor: middle; }
+  </style>
+
+  <!-- Agentic Layers (8-11) -->
+  <g transform="translate(100, 50)">
+    <rect class="layer-box agentic" width="300" height="65" rx="8" />
+    <text x="150" y="25" text-anchor="middle" class="text-main">Layer 11: Purpose</text>
+    <text x="150" y="45" text-anchor="middle" class="text-sub">Agency, Long-term Goals, Strategy</text>
+  </g>
+
+  <g transform="translate(100, 125)">
+    <rect class="layer-box agentic" width="300" height="65" rx="8" />
+    <text x="150" y="25" text-anchor="middle" class="text-main">Layer 10: Governance</text>
+    <text x="150" y="45" text-anchor="middle" class="text-sub">Policy, Ethics, Guardrails</text>
+  </g>
+
+  <g transform="translate(100, 200)">
+    <rect class="layer-box agentic" width="300" height="65" rx="8" />
+    <text x="150" y="25" text-anchor="middle" class="text-main">Layer 9: Grounding</text>
+    <text x="150" y="45" text-anchor="middle" class="text-sub">Meaning, Shared Definitions</text>
+  </g>
+
+  <g transform="translate(100, 275)">
+    <rect class="layer-box agentic" width="300" height="65" rx="8" />
+    <text x="150" y="25" text-anchor="middle" class="text-main">Layer 8: Coherence</text>
+    <text x="150" y="45" text-anchor="middle" class="text-sub">Logic, Consistency, Sync</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="80" y1="360" x2="420" y2="360" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="4,4" />
+
+  <!-- Classical OSI (1-7) -->
+  <g transform="translate(100, 380)">
+    <rect class="layer-box classical" width="300" height="55" rx="4" />
+    <text x="150" y="33" text-anchor="middle" class="text-main">Layer 7: Application</text>
+  </g>
+
+  <g transform="translate(100, 445)">
+    <rect class="layer-box classical" width="300" height="55" rx="4" />
+    <text x="150" y="33" text-anchor="middle" class="text-main">Layer 6: Presentation</text>
+  </g>
+
+  <g transform="translate(100, 510)">
+    <rect class="layer-box classical" width="300" height="55" rx="4" />
+    <text x="150" y="33" text-anchor="middle" class="text-main">Layer 5: Session</text>
+  </g>
+
+  <g transform="translate(100, 575)">
+    <rect class="layer-box classical" width="300" height="55" rx="4" />
+    <text x="150" y="33" text-anchor="middle" class="text-main">Layer 4: Transport</text>
+  </g>
+
+  <g transform="translate(100, 640)">
+    <rect class="layer-box classical" width="300" height="55" rx="4" />
+    <text x="150" y="33" text-anchor="middle" class="text-main">Layer 3: Network</text>
+  </g>
+
+  <g transform="translate(100, 705)">
+    <rect class="layer-box classical" width="300" height="55" rx="4" />
+    <text x="150" y="33" text-anchor="middle" class="text-main">Layer 2: Data Link</text>
+  </g>
+
+  <g transform="translate(100, 770)">
+    <rect class="layer-box classical" width="300" height="55" rx="4" />
+    <text x="150" y="33" text-anchor="middle" class="text-main">Layer 1: Physical</text>
+  </g>
+
+  <!-- Side Labels -->
+  <path class="bracket" d="M 80 50 L 60 50 L 60 340 L 80 340" />
+  <text x="45" y="195" transform="rotate(-90, 45, 195)" class="bracket-label">AGENTIC LAYERS</text>
+
+  <path class="bracket" d="M 80 380 L 60 380 L 60 825 L 80 825" />
+  <text x="45" y="602" transform="rotate(-90, 45, 602)" class="bracket-label">CLASSICAL OSI</text>
+
+</svg>

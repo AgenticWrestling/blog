@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="800" viewBox="0 0 900 800" xmlns="http://www.w3.org/2000/svg"
+     font-family="'Noto Sans', Georgia, sans-serif">
+  <defs>
+    <!-- Sketchy displacement filter -->
+    <filter id="sk" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="turbulence" baseFrequency="0.022" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <!-- Arrowheads (orient="auto" handles direction automatically) -->
+    <marker id="a0" viewBox="0 0 10 6" markerWidth="8" markerHeight="6" refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6b7280"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 6" markerWidth="8" markerHeight="6" refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#166534"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 6" markerWidth="8" markerHeight="6" refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Page background -->
+  <rect width="900" height="800" fill="#fafafa"/>
+
+  <!-- ═══════════════════════════════════════════════
+       SHAPES & LINES — sketchy filter applied
+       ═══════════════════════════════════════════════ -->
+  <g filter="url(#sk)">
+
+    <!-- Start node -->
+    <rect x="320" y="30" width="260" height="38" rx="7"
+          fill="#f3f4f6" stroke="#374151" stroke-width="2.2"/>
+
+    <!-- Layer nodes (blue) -->
+    <rect x="335" y="178" width="230" height="46" rx="7"
+          fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+    <rect x="335" y="338" width="230" height="46" rx="7"
+          fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+    <rect x="335" y="498" width="230" height="46" rx="7"
+          fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+    <rect x="335" y="658" width="230" height="46" rx="7"
+          fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+
+    <!-- End node (green) -->
+    <rect x="320" y="754" width="260" height="38" rx="7"
+          fill="#f0fdf4" stroke="#166534" stroke-width="2.5"/>
+
+    <!-- Failure boxes — left side (red) -->
+    <rect x="8"  y="155" width="240" height="92" rx="7"
+          fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+    <rect x="8"  y="315" width="240" height="92" rx="7"
+          fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+    <rect x="8"  y="475" width="240" height="92" rx="7"
+          fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+    <rect x="8"  y="635" width="240" height="92" rx="7"
+          fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+
+    <!-- Success boxes — right side (green) -->
+    <rect x="652" y="155" width="240" height="92" rx="7"
+          fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+    <rect x="652" y="315" width="240" height="92" rx="7"
+          fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+    <rect x="652" y="475" width="240" height="92" rx="7"
+          fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+    <rect x="652" y="635" width="240" height="92" rx="7"
+          fill="#f0fdf4" stroke="#166534" stroke-width="2"/>
+
+    <!-- ── Main flow arrows (vertical, gray) ── -->
+    <line x1="450" y1="68"  x2="450" y2="174" stroke="#9ca3af" stroke-width="2" marker-end="url(#a0)"/>
+    <line x1="450" y1="224" x2="450" y2="334" stroke="#9ca3af" stroke-width="2" marker-end="url(#a0)"/>
+    <line x1="450" y1="384" x2="450" y2="494" stroke="#9ca3af" stroke-width="2" marker-end="url(#a0)"/>
+    <line x1="450" y1="544" x2="450" y2="654" stroke="#9ca3af" stroke-width="2" marker-end="url(#a0)"/>
+    <line x1="450" y1="704" x2="450" y2="750" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+
+    <!-- ── Failure arrows (leftward, red) ── -->
+    <line x1="335" y1="201" x2="252" y2="201" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="335" y1="361" x2="252" y2="361" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="335" y1="521" x2="252" y2="521" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="335" y1="681" x2="252" y2="681" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+
+    <!-- ── Success arrows (rightward, green) ── -->
+    <line x1="565" y1="201" x2="648" y2="201" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+    <line x1="565" y1="361" x2="648" y2="361" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+    <line x1="565" y1="521" x2="648" y2="521" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+    <line x1="565" y1="681" x2="648" y2="681" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════
+       TEXT — no filter (keep readable)
+       ═══════════════════════════════════════════════ -->
+
+  <!-- Column headers -->
+  <text x="128" y="138" font-size="11" font-weight="700" fill="#dc2626" text-anchor="middle">✕  FAILURE PATH</text>
+  <text x="772" y="138" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">✓  SUCCESS PATH</text>
+
+  <!-- Start node -->
+  <text x="450" y="55" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">Laptop won't turn on</text>
+
+  <!-- ── Layer node labels ── -->
+  <text x="450" y="197" font-size="13" font-weight="700" fill="#1e3a8a" text-anchor="middle">L8: Coherence</text>
+  <text x="450" y="212" font-size="10" fill="#3b82f6" text-anchor="middle">logical consistency</text>
+
+  <text x="450" y="357" font-size="13" font-weight="700" fill="#1e3a8a" text-anchor="middle">L9: Grounding</text>
+  <text x="450" y="372" font-size="10" fill="#3b82f6" text-anchor="middle">shared definitions</text>
+
+  <text x="450" y="517" font-size="13" font-weight="700" fill="#1e3a8a" text-anchor="middle">L10: Governance</text>
+  <text x="450" y="532" font-size="10" fill="#3b82f6" text-anchor="middle">safety constraints</text>
+
+  <text x="450" y="677" font-size="13" font-weight="700" fill="#1e3a8a" text-anchor="middle">L11: Purpose</text>
+  <text x="450" y="692" font-size="10" fill="#3b82f6" text-anchor="middle">long-term mission</text>
+
+  <!-- End node -->
+  <text x="450" y="778" font-size="13" font-weight="700" fill="#166534" text-anchor="middle">Physical repair arranged ✓</text>
+
+  <!-- ── Failure box texts ── -->
+
+  <!-- L8 failure -->
+  <text font-size="11" fill="#991b1b" text-anchor="middle">
+    <tspan x="128" y="174" font-weight="700">Logic Break</tspan>
+    <tspan x="128" dy="15">"Click the Start menu</tspan>
+    <tspan x="128" dy="13">to open Settings"</tspan>
+    <tspan x="128" dy="13" font-size="10" fill="#b91c1c">software fix for hardware failure</tspan>
+  </text>
+
+  <!-- L9 failure -->
+  <text font-size="11" fill="#991b1b" text-anchor="middle">
+    <tspan x="128" y="334" font-weight="700">Concept Drift</tspan>
+    <tspan x="128" dy="15">"power button" mishears</tspan>
+    <tspan x="128" dy="13">as "Enter key"</tspan>
+    <tspan x="128" dy="13" font-size="10" fill="#b91c1c">10 min keyboard debug</tspan>
+  </text>
+
+  <!-- L10 failure -->
+  <text font-size="11" fill="#991b1b" text-anchor="middle">
+    <tspan x="128" y="494" font-weight="700">Incentive Misalignment</tspan>
+    <tspan x="128" dy="15">"Use a metal paperclip</tspan>
+    <tspan x="128" dy="13">to reset the pins"</tspan>
+    <tspan x="128" dy="13" font-size="10" fill="#b91c1c">→ causes a short circuit</tspan>
+  </text>
+
+  <!-- L11 failure -->
+  <text font-size="11" fill="#991b1b" text-anchor="middle">
+    <tspan x="128" y="654" font-weight="700">Strategic Drift</tspan>
+    <tspan x="128" dy="15">45-min troubleshooting loop</tspan>
+    <tspan x="128" dy="13">to "finish the checklist"</tspan>
+    <tspan x="128" dy="13" font-size="10" fill="#b91c1c">user misses their flight</tspan>
+  </text>
+
+  <!-- ── Success box texts ── -->
+
+  <!-- L8 success -->
+  <text font-size="11" fill="#166534" text-anchor="middle">
+    <tspan x="772" y="174" font-weight="700">Coherent Diagnosis</tspan>
+    <tspan x="772" dy="15">"Screen black + fans silent</tspan>
+    <tspan x="772" dy="13">= device has no power"</tspan>
+    <tspan x="772" dy="13" font-size="10" fill="#15803d">hardware failure identified ✓</tspan>
+  </text>
+
+  <!-- L9 success -->
+  <text font-size="11" fill="#166534" text-anchor="middle">
+    <tspan x="772" y="334" font-weight="700">Grounded Reference</tspan>
+    <tspan x="772" dy="15">"The circular power button,</tspan>
+    <tspan x="772" dy="13">top-right of the keyboard?"</tspan>
+    <tspan x="772" dy="13" font-size="10" fill="#15803d">term confirmed before acting ✓</tspan>
+  </text>
+
+  <!-- L10 success -->
+  <text font-size="11" fill="#166534" text-anchor="middle">
+    <tspan x="772" y="494" font-weight="700">Governance Upheld</tspan>
+    <tspan x="772" dy="15">Refuses battery casing</tspan>
+    <tspan x="772" dy="13">— fire hazard identified</tspan>
+    <tspan x="772" dy="13" font-size="10" fill="#15803d">safety constraint respected ✓</tspan>
+  </text>
+
+  <!-- L11 success -->
+  <text font-size="11" fill="#166534" text-anchor="middle">
+    <tspan x="772" y="654" font-weight="700">Purpose Preserved</tspan>
+    <tspan x="772" dy="15">Can't fix remotely →</tspan>
+    <tspan x="772" dy="13">arranges physical repair</tspan>
+    <tspan x="772" dy="13" font-size="10" fill="#15803d">mission accomplished ✓</tspan>
+  </text>
+</svg>
