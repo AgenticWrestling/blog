@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgenticWrestl.ing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NWZQREB58C"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NWZQREB58C');</script>
+  <style>
+    h1, h2, h3, h4 { font-family: 'Chelsea Market', cursive; }
+    body { font-family: 'Noto Sans', sans-serif; font-weight: 300; font-size: 0.85rem; line-height: 1.8; }
+    main { max-width: 860px; margin-inline: auto; }
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .tag { background: var(--pico-primary-background); color: white; padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; cursor: pointer; user-select: none; transition: opacity 0.15s; }
+    .tag:hover { opacity: 0.8; }
+    .tag.active { outline: 2px solid white; outline-offset: -2px; }
+    .post-card { margin-bottom: 1.5rem; padding: 1.5rem; border: 1px solid var(--pico-muted-border-color); border-radius: 8px; transition: box-shadow 0.2s; }
+    .post-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .post-meta { color: var(--pico-muted-color); font-size: 0.75rem; margin-top: 0.75rem; margin-bottom: 0; }
+    .post-card h2 { margin-bottom: 0.5rem; }
+    .post-card h2 a { text-decoration: none; }
+    .post-summary { margin-top: 0.5rem; }
+    .site-header { padding: 2rem 0 1rem; border-bottom: 1px solid var(--pico-muted-border-color); margin-bottom: 2rem; }
+    .byline { color: var(--pico-muted-color); font-size: 0.85rem; margin-top: 0.4rem; }
+    #filter-bar { display: none; align-items: center; gap: 0.5rem; flex-wrap: wrap; padding: 0.75rem 1rem; margin-bottom: 1.5rem; background: var(--pico-card-background-color); border: 1px solid var(--pico-muted-border-color); border-radius: 8px; }
+    #filter-bar.visible { display: flex; }
+    #filter-bar .filter-label { color: var(--pico-muted-color); font-size: 0.8rem; margin-right: 0.25rem; }
+    .filter-tag { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--pico-primary-background); color: white; padding: 0.2rem 0.4rem 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; }
+    .filter-tag button { all: unset; cursor: pointer; font-size: 1rem; line-height: 1; opacity: 0.8; }
+    .filter-tag button:hover { opacity: 1; }
+    #no-results { display: none; color: var(--pico-muted-color); padding: 2rem 0; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="site-header">
+      <h1>AgenticWrestl.ing</h1>
+      <p class="byline">Running into agentic walls and clambering over them.<br>
+      <a href="mailto:nicholas@reid.contact">Nicholas Reid</a></p>
+    </header>
+    <div id="filter-bar">
+      <span class="filter-label">Filtered by:</span>
+    </div>
+    {{range .Posts}}
+    <article class="post-card" data-tags="{{range .Tags}}{{.}} {{end}}">
+      <h2><a href="{{.Slug}}/index.html">{{.Title}}</a></h2>
+      {{if .Summary}}<p class="post-summary">{{.Summary}}</p>{{end}}
+      {{if .Tags}}
+      <div class="tags">
+        {{range .Tags}}<span class="tag" data-tag="{{.}}">{{.}}</span>{{end}}
+      </div>
+      {{end}}
+      <p class="post-meta">Last updated: {{.CreatedAt.Format "January 2, 2006"}}</p>
+    </article>
+    {{else}}
+    <p>No posts yet.</p>
+    {{end}}
+    <p id="no-results">No posts match the selected filters.</p>
+  </main>
+  <script>
+    const active = new Set();
+
+    function render() {
+      const bar = document.getElementById('filter-bar');
+      // Rebuild filter chips (keep the label, replace the rest)
+      const label = bar.querySelector('.filter-label');
+      bar.innerHTML = '';
+      bar.appendChild(label);
+      active.forEach(tag => {
+        const chip = document.createElement('span');
+        chip.className = 'filter-tag';
+        chip.innerHTML = tag + ' <button aria-label="Remove filter">\u00d7</button>';
+        chip.querySelector('button').addEventListener('click', () => { active.delete(tag); render(); });
+        bar.appendChild(chip);
+      });
+      bar.classList.toggle('visible', active.size > 0);
+
+      // Show/hide posts
+      let visible = 0;
+      document.querySelectorAll('.post-card').forEach(card => {
+        const cardTags = card.dataset.tags.trim().split(/\s+/);
+        const match = active.size === 0 || [...active].every(t => cardTags.includes(t));
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      document.getElementById('no-results').style.display = (active.size > 0 && visible === 0) ? '' : 'none';
+
+      // Sync active class on all tag pills
+      document.querySelectorAll('.tag').forEach(el => {
+        el.classList.toggle('active', active.has(el.dataset.tag));
+      });
+    }
+
+    document.querySelectorAll('.tag').forEach(el => {
+      el.addEventListener('click', () => {
+        active.has(el.dataset.tag) ? active.delete(el.dataset.tag) : active.add(el.dataset.tag);
+        render();
+      });
+    });
+  </script>
+</body>
+</html>

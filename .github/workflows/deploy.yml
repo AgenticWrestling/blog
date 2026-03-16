@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Build binary
+        run: go build -o blog .
+
+      - name: Build site
+        run: ./blog build
+        env:
+          BLOG_INPUT_DIR: ./posts
+          BLOG_OUTPUT_DIR: ./public
+
+      - name: Deploy to PorkBun
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.PORKBUN_FTP_HOST }}
+          username: ${{ secrets.PORKBUN_FTP_USER }}
+          password: ${{ secrets.PORKBUN_FTP_PASS }}
+          local-dir: ./public/
+          dangerous-clean-slate: false

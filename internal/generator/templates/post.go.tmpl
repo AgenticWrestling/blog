@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{.Title}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NWZQREB58C"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NWZQREB58C');</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    h1, h2, h3, h4 { font-family: 'Chelsea Market', cursive; }
+    body { font-family: 'Noto Sans', sans-serif; font-weight: 300; font-size: 0.85rem; line-height: 1.8; }
+    main { max-width: 1100px; margin-inline: auto; }
+    .page-layout { display: flex; gap: 2.5rem; align-items: flex-start; }
+    .post-content { flex: 1; min-width: 0; }
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .tag { background: var(--pico-primary-background); color: white; padding: 0.2rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; }
+    .post-meta { color: var(--pico-muted-color); font-size: 0.9rem; margin-bottom: 1rem; }
+    .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .post-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--pico-muted-border-color); }
+    pre { background: var(--pico-code-background); border-radius: 6px; padding: 1rem; overflow-x: auto; }
+    code { font-size: 0.9em; }
+    .mermaid-diagram { text-align: center; margin: 1.5rem 0; }
+    .mermaid-diagram svg { max-width: 100%; height: auto; }
+    table img { min-width: 3rem; min-height: 3rem; }
+    .toc-sidebar { width: 20%; flex-shrink: 0; position: sticky; top: 1.5rem; max-height: calc(100vh - 3rem); overflow-y: auto; overflow-x: hidden; }
+    .toc-sidebar nav { border-left: 2px solid var(--pico-muted-border-color); padding-left: 1rem; }
+    .toc-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--pico-muted-color); margin-bottom: 0.5rem; }
+    .toc-list { list-style: none; padding: 0; margin: 0; }
+    .toc-list li { margin: 0; }
+    .toc-list a { display: block; padding: 0.2rem 0; font-size: 0.8rem; color: var(--pico-muted-color); text-decoration: none; line-height: 1.4; transition: color 0.15s; }
+    .toc-list a:hover, .toc-list a.active { color: var(--pico-primary); }
+    .toc-list .toc-h3 a { padding-left: 0.75rem; font-size: 0.75rem; }
+    @media (max-width: 768px) { .toc-sidebar { display: none; } main { max-width: 860px; } }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <a class="back-link" href="../index.html">← Back to index</a>
+    <div class="page-layout">
+      <article class="post-content">
+        <header class="post-header">
+          <h1>{{.Title}}</h1>
+          <p class="post-meta">{{.CreatedAt.Format "January 2, 2006"}}</p>
+          {{if .Tags}}
+          <div class="tags">
+            {{range .Tags}}<span class="tag">{{.}}</span>{{end}}
+          </div>
+          {{end}}
+        </header>
+        <section>
+          {{.HTMLBody}}
+        </section>
+        <div class="giscus"></div>
+      </article>
+      <aside class="toc-sidebar">
+        <nav id="toc">
+          <p class="toc-title">Contents</p>
+          <ul class="toc-list" id="toc-list"></ul>
+        </nav>
+      </aside>
+    </div>
+  </main>
+  <script>hljs.highlightAll();</script>
+  <script src="https://giscus.app/client.js"
+    data-repo="AgenticWrestling/blog"
+    data-repo-id="R_kgDORoxP9w"
+    data-category="Announcements"
+    data-category-id="DIC_kwDORoxP984C4ive"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="top"
+    data-theme="noborder_light"
+    data-lang="en"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async>
+  </script>
+  <script>
+    (function() {
+      const headings = document.querySelector('.post-content section').querySelectorAll('h2, h3');
+      const list = document.getElementById('toc-list');
+      if (headings.length < 2) { document.querySelector('.toc-sidebar').style.display = 'none'; return; }
+      headings.forEach(h => {
+        const li = document.createElement('li');
+        li.className = h.tagName === 'H3' ? 'toc-h3' : 'toc-h2';
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+
+      // Scroll-spy
+      const links = list.querySelectorAll('a');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(a => a.classList.remove('active'));
+            const active = list.querySelector('a[href="#' + e.target.id + '"]');
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { rootMargin: '0px 0px -70% 0px' });
+      headings.forEach(h => observer.observe(h));
+    })();
+  </script>
+</body>
+</html>
