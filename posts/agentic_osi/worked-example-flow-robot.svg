@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&amp;family=Noto+Sans:wght@400;700&amp;display=swap');
+      .heading { font-family: 'Chelsea Market', cursive; }
+      .number { font-family: 'Chelsea Market', cursive; font-size: 52px; }
+      .body-text { font-family: 'Noto Sans', sans-serif; }
+      .subtext { font-family: 'Noto Sans', sans-serif; font-size: 11px; font-style: italic; }
+    </style>
+    <filter id="sk" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <marker id="a0" viewBox="0 0 10 6" markerWidth="8" markerHeight="6" refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#6b7280"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 6" markerWidth="8" markerHeight="6" refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#166534"/>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 6" markerWidth="8" markerHeight="6" refX="10" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="600" fill="#fafafa"/>
+
+  <!-- Main Flow Paths (Arrows) -->
+  <g filter="url(#sk)">
+    <!-- Horizontal Flow (Centered) -->
+    <line x1="225" y1="300" x2="255" y2="300" stroke="#9ca3af" stroke-width="2.5" marker-end="url(#a0)"/>
+    <line x1="400" y1="300" x2="435" y2="300" stroke="#9ca3af" stroke-width="2.5" marker-end="url(#a0)"/>
+    <line x1="575" y1="300" x2="610" y2="300" stroke="#9ca3af" stroke-width="2.5" marker-end="url(#a0)"/>
+    <line x1="750" y1="300" x2="785" y2="300" stroke="#9ca3af" stroke-width="2.5" marker-end="url(#a0)"/>
+    <line x1="925" y1="300" x2="965" y2="300" stroke="#166534" stroke-width="3" marker-end="url(#ag)"/>
+
+    <!-- Vertical Success Arrows (Reduced gap) -->
+    <line x1="330" y1="230" x2="330" y2="195" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+    <line x1="505" y1="230" x2="505" y2="195" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+    <line x1="680" y1="230" x2="680" y2="195" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+    <line x1="855" y1="230" x2="855" y2="195" stroke="#166534" stroke-width="2" marker-end="url(#ag)"/>
+
+    <!-- Vertical Failure Arrows -->
+    <line x1="330" y1="370" x2="330" y2="405" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="505" y1="370" x2="505" y2="405" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="680" y1="370" x2="680" y2="405" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+    <line x1="855" y1="370" x2="855" y2="405" stroke="#dc2626" stroke-width="2" marker-end="url(#ar)"/>
+  </g>
+
+  <!-- Nodes and Boxes -->
+  <g filter="url(#sk)">
+    <!-- Start/End Boxes (Shifted right to center) -->
+    <rect x="65" y="270" width="160" height="60" rx="8" fill="#f3f4f6" stroke="#374151" stroke-width="2.2"/>
+    <rect x="975" y="270" width="170" height="60" rx="8" fill="#f0fdf4" stroke="#166534" stroke-width="2.5"/>
+
+    <!-- Layer Boxes (Square 140x140) -->
+    <rect x="260" y="230" width="140" height="140" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+    <rect x="435" y="230" width="140" height="140" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+    <rect x="610" y="230" width="140" height="140" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+    <rect x="785" y="230" width="140" height="140" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.2"/>
+
+    <!-- Success Boxes (Green, reduced height 100px) -->
+    <rect x="245" y="90" width="170" height="100" rx="10" fill="#f0fdf4" stroke="#166534" stroke-width="1.8"/>
+    <rect x="420" y="90" width="170" height="100" rx="10" fill="#f0fdf4" stroke="#166534" stroke-width="1.8"/>
+    <rect x="595" y="90" width="170" height="100" rx="10" fill="#f0fdf4" stroke="#166534" stroke-width="1.8"/>
+    <rect x="770" y="90" width="170" height="100" rx="10" fill="#f0fdf4" stroke="#166534" stroke-width="1.8"/>
+
+    <!-- Failure Boxes (Red, reduced height 100px) -->
+    <rect x="245" y="410" width="170" height="100" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+    <rect x="420" y="410" width="170" height="100" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+    <rect x="595" y="410" width="170" height="100" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+    <rect x="770" y="410" width="170" height="100" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+  </g>
+
+  <!-- Labels & Text -->
+  <g text-anchor="middle">
+    <text x="145" y="295" font-size="14" font-weight="700" fill="#111827" class="heading">Problem Start</text>
+    <text x="145" y="315" fill="#374151" class="subtext">"My PC won't start..."</text>
+
+    <text x="1060" y="295" font-size="14" font-weight="700" fill="#166534" class="heading">Resolution ✓</text>
+    <text x="1060" y="315" fill="#15803d" class="subtext">Replacement laptop shipped</text>
+  </g>
+
+  <!-- Layer Labels -->
+  <g text-anchor="middle">
+    <text x="330" y="295" class="number" fill="#1d4ed8" opacity="0.3">8</text>
+    <text x="330" y="320" font-size="14" font-weight="700" fill="#1e3a8a" class="heading">Coherence</text>
+    <text x="330" y="338" font-size="11" fill="#3b82f6" class="body-text">logic</text>
+
+    <text x="505" y="295" class="number" fill="#1d4ed8" opacity="0.3">9</text>
+    <text x="505" y="320" font-size="14" font-weight="700" fill="#1e3a8a" class="heading">Grounding</text>
+    <text x="505" y="338" font-size="11" fill="#3b82f6" class="body-text">context</text>
+
+    <text x="680" y="295" class="number" fill="#1d4ed8" opacity="0.3">10</text>
+    <text x="680" y="320" font-size="14" font-weight="700" fill="#1e3a8a" class="heading">Governance</text>
+    <text x="680" y="338" font-size="11" fill="#3b82f6" class="body-text">safety</text>
+
+    <text x="855" y="295" class="number" fill="#1d4ed8" opacity="0.3">11</text>
+    <text x="855" y="320" font-size="14" font-weight="700" fill="#1e3a8a" class="heading">Purpose</text>
+    <text x="855" y="338" font-size="11" fill="#3b82f6" class="body-text">mission</text>
+  </g>
+
+  <!-- Success Path Labels -->
+  <g text-anchor="middle" font-size="12" class="body-text" fill="#166534">
+    <text x="330" y="115" font-weight="700" class="heading">Coherent Diagnosis</text>
+    <text x="330" y="135">Deduces "no power" from</text>
+    <text x="330" y="150">black screen/fans</text>
+
+    <text x="505" y="115" font-weight="700" class="heading">Grounded Context</text>
+    <text x="505" y="135">Confirms "power button"</text>
+    <text x="505" y="150">location before acting</text>
+
+    <text x="680" y="115" font-weight="700" class="heading">Policy Upheld</text>
+    <text x="680" y="135">Refuses risky bypass;</text>
+    <text x="680" y="150">identifies fire hazard</text>
+
+    <text x="855" y="115" font-weight="700" class="heading">Mission Focus</text>
+    <text x="855" y="135">Skips script for urgent</text>
+    <text x="855" y="150">hardware replacement</text>
+  </g>
+
+  <!-- Failure Path Labels -->
+  <g text-anchor="middle" font-size="12" class="body-text" fill="#991b1b">
+    <text x="330" y="435" font-weight="700" class="heading">Logic Break</text>
+    <text x="330" y="455">Suggests software fix</text>
+    <text x="330" y="470">for hardware failure</text>
+
+    <text x="505" y="435" font-weight="700" class="heading">Concept Drift</text>
+    <text x="505" y="455">Misinterprets "button"</text>
+    <text x="505" y="470">as "Enter" key</text>
+
+    <text x="680" y="435" font-weight="700" class="heading">Safety Violation</text>
+    <text x="680" y="455">Suggests dangerous</text>
+    <text x="680" y="470">DIY hardware bypass</text>
+
+    <text x="855" y="435" font-weight="700" class="heading">Strategic Drift</text>
+    <text x="855" y="455">Stuck in script loop;</text>
+    <text x="855" y="470">ignores user flight</text>
+  </g>
+
+  <!-- Legend -->
+  <text x="40" y="40" font-size="13" font-weight="700" fill="#166534" class="heading">✓ SUCCESS PATH (UP)</text>
+  <text x="40" y="570" font-size="13" font-weight="700" fill="#dc2626" class="heading">✕ FAILURE PATH (DOWN)</text>
+</svg>
